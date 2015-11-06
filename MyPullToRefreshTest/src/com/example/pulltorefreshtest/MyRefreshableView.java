@@ -230,7 +230,7 @@ public class MyRefreshableView extends LinearLayout implements OnTouchListener {
      */
     @Override
     public boolean onTouch(View arg0, MotionEvent event) {
-        chechIsAbleToPull(event);
+        checkIsAbleToPull(event);
         if (ableToPull) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -246,7 +246,7 @@ public class MyRefreshableView extends LinearLayout implements OnTouchListener {
                     if (distance < touchSlop) {
                         return false;
                     }
-                    if (distance > touchSlop) {
+                    if (pullStatus!=STATUS_REFRESHING) {
                         // 通过偏移下拉头的topMargin值，来实现下拉效果
                         int newMargin = (distance / 2) + hideHeaderHeight;
                         headerLayoutParams.topMargin = newMargin;
@@ -257,6 +257,8 @@ public class MyRefreshableView extends LinearLayout implements OnTouchListener {
                         }else{
                             pullStatus = STATUS_PULL_TO_REFRESH;
                         }
+                    }else{
+                        return  true;
                     }
                     break;
                 case MotionEvent.ACTION_UP:
@@ -276,10 +278,8 @@ public class MyRefreshableView extends LinearLayout implements OnTouchListener {
                 updateHeaderview();
                 return true;
             }
-            return false;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -337,7 +337,7 @@ public class MyRefreshableView extends LinearLayout implements OnTouchListener {
         arrow.startAnimation(animation);
     }
 
-    private void chechIsAbleToPull(MotionEvent event) {
+    private void checkIsAbleToPull(MotionEvent event) {
         View firstChild = listView.getChildAt(0);
         if (firstChild != null) {
             int firstVisiblePos = listView.getFirstVisiblePosition();
@@ -348,10 +348,6 @@ public class MyRefreshableView extends LinearLayout implements OnTouchListener {
                 // 如果首个元素的上边缘，距离父布局值为0，就说明ListView滚动到了最顶部，此时应该允许下拉刷新
                 ableToPull = true;
             } else {
-                if (headerLayoutParams.topMargin != hideHeaderHeight) {
-                    headerLayoutParams.topMargin = hideHeaderHeight;
-                    header.setLayoutParams(headerLayoutParams);
-                }
                 ableToPull = false;
             }
         } else {
@@ -379,7 +375,6 @@ public class MyRefreshableView extends LinearLayout implements OnTouchListener {
                 }
                 pullStatus=STATUS_REFRESH_FINISHED;
                 publishProgress(0);
-
                 return null;
             }
 
