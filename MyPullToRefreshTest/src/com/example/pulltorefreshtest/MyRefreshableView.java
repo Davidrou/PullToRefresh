@@ -11,11 +11,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.View.OnTouchListener;
 import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.*;
 
 
 public class MyRefreshableView extends LinearLayout implements OnTouchListener {
@@ -33,7 +29,7 @@ public class MyRefreshableView extends LinearLayout implements OnTouchListener {
     /**
      * 需要去下拉刷新的ListView
      */
-    private ListView listView;
+    private GridView listView;
 
     /**
      * 刷新时显示的进度条
@@ -179,9 +175,10 @@ public class MyRefreshableView extends LinearLayout implements OnTouchListener {
             hideHeaderHeight = -header.getHeight();
             headerLayoutParams = (MarginLayoutParams) header.getLayoutParams();
             headerLayoutParams.topMargin = hideHeaderHeight;
-            listView = (ListView) getChildAt(1);
+            listView = (GridView) getChildAt(1);
             listView.setOnTouchListener(this);
-            loadOnce = true;
+            loadOnce = true
+            ;
         }
     }
 

@@ -13,11 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <ListView
+        <GridView
             android:id="@+id/list_view"
+            android:numColumns="2"
             android:layout_width="fill_parent"
             android:layout_height="match_parent" >
-        </ListView>
+        </GridView>
     </com.example.pulltorefreshtest.MyRefreshableView>
 
 </RelativeLayout>
